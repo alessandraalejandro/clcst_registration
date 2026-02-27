@@ -21,20 +21,25 @@ const username = ref("");
 const password = ref("");
 
 const login = async () => {
-        await getToken();
-        await axios({
-            method:"POST",
-            url:"/login",
-            data:{
-                email:username.value,
-                password:password.value
-            }
-        }).then(async(results) => {
-            router.push("/home");
-            console.log(results);
+    try {
+        // First, get CSRF cookie
+        await axios.get('/sanctum/csrf-cookie');
+
+        // Then, login
+        const response = await axios.post('/login', {
+            email: username.value,
+            password: password.value
         });
-        console.log(username.value);
-        console.log(password.value);
+
+        console.log(response.data);
+
+        // Navigate **after successful login**
+        router.push("/home");
+
+    } catch (error) {
+        console.error(error);
+        alert('Login failed');
+    }
 };
 </script>
 
