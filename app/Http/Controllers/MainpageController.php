@@ -7,4 +7,7 @@ use Illuminate\Http\Request;
 class MainpageController extends Controller
 {
     //
+    public function show(){
+        
+    }
 }

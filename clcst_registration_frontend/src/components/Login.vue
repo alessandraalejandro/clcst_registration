@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import hayup from "./box.vue";
+import hayup from "./Nav.vue";
 import axios from "axios";
 
 import { useRouter } from "vue-router";
@@ -39,14 +39,16 @@ const login = async () => {
 </script>
 
 <template>
-    <div class="card p-3 d-flex flex-column text-start">
-        <form @submit.prevent="login()" id="form">
-            <label>Username</label><br>
-            <input type="text" class="form-control" name="username" v-model="username" required><br>
-            <label>Password</label><br>
-            <input type="password" class="form-control" name="password" v-model="password" required autocomplete="off"><br>
-            <button type="submit" class="btn btn-success p-2 w-100">Login</button>
-        </form>
+    <div class="vh-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="card p-3 d-flex flex-column text-start">
+            <form @submit.prevent="login()" id="form">
+                <label class="form-label">Username</label><br>
+                <input type="text" class="form-control" name="username" v-model="username" required><br>
+                <label class="form-label">Password</label><br>
+                <input type="password" class="form-control" name="password" v-model="password" required autocomplete="off"><br>
+                <button type="submit" class="btn btn-success p-2 w-100">Login</button>
+            </form>
+        </div>
     </div>
         
 </template>
