@@ -19,7 +19,7 @@ const navLogin = ref([
     
 ]);
 
-const dashLogin = ref([
+const navDash = ref([
     
         {
             title: "Dashboard",
@@ -38,7 +38,7 @@ const dashLogin = ref([
 </script>
 <template>
     <div class="vh-100 w-100">
-        <Navbar :loginNav="navLogin" :dashNav="dashLogin" />
+        <Navbar :loginNav="navLogin" :dashNav="navDash" />
       <div class="d-flex flex-column justify-content-center align-items-center h-100">
          <RouterView></RouterView>
       </div>

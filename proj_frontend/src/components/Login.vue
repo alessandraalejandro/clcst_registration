@@ -1,12 +1,11 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import axios from "axios";
-
 import { useRouter } from "vue-router";
 
-import Header from "./Navbar.vue";
 import LoginSection from "./LoginSection.vue";
-import Navbar from "./Navbar.vue";
+import About from "./About.vue";
+import FooterSection from "./FooterSection.vue";
 
 const router = useRouter();
 
@@ -45,5 +44,6 @@ const login = async () => {
     <div >
         <LoginSection/>
     </div>
+    
     
 </template>
