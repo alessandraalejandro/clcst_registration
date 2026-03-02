@@ -1,3 +1,47 @@
+<script setup>
+import { ref, onMounted, computed } from "vue";
+import Navbar from "./components/Navbar.vue";
+
+const navLogin = ref([
+    
+        {
+            title: "Home",
+            link: "/",
+        },
+        {
+            title: "About",
+            link: "/",
+        },
+        {
+            title: "Contact",
+            link: "/",
+        },
+    
+]);
+
+const dashLogin = ref([
+    
+        {
+            title: "Dashboard",
+            link: "/",
+        },
+        {
+            title: "Records",
+            link: "/",
+        },
+        {
+            title: "Reports",
+            link: "/",
+        },
+    
+]);
+</script>
 <template>
-      <RouterView></RouterView>
+    <div class="vh-100 w-100">
+        <Navbar :loginNav="navLogin" :dashNav="dashLogin" />
+      <div class="d-flex flex-column justify-content-center align-items-center h-100">
+         <RouterView></RouterView>
+      </div>
+    </div>
+
 </template>
