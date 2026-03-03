@@ -29,6 +29,11 @@ class MainpageController extends Controller
             'person_contact' => $request->input('person_contact'),
         ]);
     }
+    else if ($request->input('mode') == 2){
+            $person = DB::table('persons_tbl')
+            ->where("person_id", '=', $request->input('person_id'))
+            ->delete();
+    }
     else {
         $person = DB::table('persons_tbl')->insert([
             'person_fname' => $request->input('person_fname'),

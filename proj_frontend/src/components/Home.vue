@@ -6,7 +6,7 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-// for autoload
+// for autoload - render first
 onMounted(() => {
     getPerson();
     getUser();
@@ -14,9 +14,12 @@ onMounted(() => {
 
 const editPerson = ref({});
 
+const loginChecker = ref(false);
+
 const person = ref([]);
 const loading = ref(true);
 
+// get all data in person table
 const getPerson = async () => {
     try {
         await axios({
@@ -31,6 +34,7 @@ const getPerson = async () => {
     }
 };
 
+// get if user is logged in for session
 const getUser = async () => {
     try {
         await axios({
@@ -57,7 +61,8 @@ const logout = async () => {
     }
 };
 
-const addPerson = async () => {
+// add or edit person
+const controlPerson = async () => {
     try {
         await axios({
             method: "POST",
@@ -77,6 +82,18 @@ const addPerson = async () => {
     }
 };
 
+// delete person
+const deletePerson = async (p) => {
+    if (!confirm("Are you sure you want to delete?")) return;
+
+    await axios.post("api/edit-person", {
+        mode: 2,
+        person_id: p.person_id
+    });
+
+    await getPerson();
+};
+
 const setValues = (mode, data) => {
     let x = {
         mode: mode,
@@ -92,15 +109,10 @@ const setValues = (mode, data) => {
     editPerson.value = x;
 };
 
-const loginChecker = ref(false);
-
-
 </script>
 
 <template>
-    <div v-if="loginChecker">
-        <button type="button" @click="logout()">Logout</button>
-        <button type="button" @click="getPerson()">get person</button>
+    <div class="w-70" v-if="loginChecker">
         <table class="table">
             <thead>
                 <tr>
@@ -137,7 +149,11 @@ const loginChecker = ref(false);
                             Edit Record
                         </button>
                     </td>
-                    <td><button>Delete</button></td>
+                    <td>
+                        <button class="btn btn-danger" @click="deletePerson(p)">
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -162,7 +178,7 @@ const loginChecker = ref(false);
             aria-hidden="true"
         >
             <div class="modal-dialog">
-                <form class="modal-content" @submit.prevent="addPerson">
+                <form class="modal-content" @submit.prevent="controlPerson">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
                             Modal title
@@ -223,5 +239,6 @@ const loginChecker = ref(false);
                 </form>
             </div>
         </div>
+        <button type="button" @click="logout()">Logout</button>
     </div>
 </template>

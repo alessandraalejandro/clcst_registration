@@ -59,7 +59,7 @@ const nav2 = computed(() => {
                 class="collapse navbar-collapse justify-content-end"
                 id="navbarNav"
             >
-                <ul class="navbar-nav gap-lg-3" v-if="path=='/login'">
+                <ul class="navbar-nav gap-lg-3" v-if="path=='/login' || path=='/about' || path=='/contact'">
                     <li class="nav-item" v-for="(n, index) in nav1" :key="index">
                         <router-link :to="n.link" class="nav-link">
                             {{ n.title }}
@@ -67,7 +67,7 @@ const nav2 = computed(() => {
                     </li>
                 </ul>
                 
-                <ul class="navbar-nav gap-lg-3" v-else>
+                <ul class="navbar-nav gap-lg-3" v-else-if="path=='/home'">
                     <li class="nav-item" v-for="(n, index) in nav2" :key="index">
                         <router-link :to="n.link" class="nav-link">
                             {{ n.title }}

@@ -1,24 +1,32 @@
 import { createRouter, createMemoryHistory, createWebHashHistory } from "vue-router";
-import Home from '../components/Home.vue'
-import Sample from '../components/sample.vue'
+import Login from '../components/Login.vue'
+
 const routes = [
     {
-        path: '/',
-        redirect: '/login'
-    },
-    // {
-    //     path: '/:pathMatch(.*)*',
-    //     name: 'NotFound',
-    //     component: () => import('../components/NotFound.vue')
-    // },
-    {
-        path: '/login', name: 'Login', component: () => import("../components/Login.vue")
+        path: '/', redirect: '/login'
     },
     {
-        path: '/home', name: 'Home', component: Home
+        path: '/login', name: 'Login', component: Login
     },
     {
-        path: '/sample', name: 'Sample', component: Sample
+        path: '/home', name: 'Home', component: () => import("../components/Home.vue"), 
+    },
+    {
+        path: '/about', name: 'About', component: () => import('../components/About.vue')
+    },
+    {
+        path: '/contact', name: 'Contact', component: () => import('../components/Contact.vue')
+    },
+    {
+        path: '/forgot-password', name: 'ForgotPassword', component: () => import('../components/ForgotPassword.vue')
+    },
+    {
+        path: '/reset-password/:token', name: 'ResetPassword', component: () => import('../components/ResetPassword.vue')
+    },
+
+
+    {
+        path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../components/NotFound.vue')
     }
 ];
 

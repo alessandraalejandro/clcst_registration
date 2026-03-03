@@ -1,6 +1,6 @@
 <template>
     <!-- ================= ABOUT ================= -->
-    <section id="about" class="py-5">
+    <section id="about" class="py-5 w-100">
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-12 col-md-10 col-lg-8">

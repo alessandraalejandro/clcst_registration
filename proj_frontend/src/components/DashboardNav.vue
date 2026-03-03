@@ -21,13 +21,13 @@
 
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav gap-lg-3">
-                    <router-link to="/sample" class="nav-item">
+                    <router-link to="/dashboard" class="nav-item">
                         <span class="nav-link">Dashboard</span>
                     </router-link>
-                    <router-link to="/sample" class="nav-item">
+                    <router-link to="/records" class="nav-item">
                         <span class="nav-link">Records</span>
                     </router-link>
-                    <router-link to="/sample" class="nav-item">
+                    <router-link to="/reports" class="nav-item">
                         <span class="nav-link">Reports</span>
                     </router-link>
                 </ul>
