@@ -8,7 +8,7 @@ const route = useRoute();
 
 // for autoload - render first
 onMounted(() => {
-    getPerson();
+    getPerson(1);
     getUser();
 });
 
@@ -18,20 +18,30 @@ const loginChecker = ref(false);
 
 const person = ref([]);
 const loading = ref(true);
+const currentPage = ref(1);
+const lastPage = ref(1);
 
 // get all data in person table
-const getPerson = async () => {
+const getPerson = async (page = 1) => {
     try {
-        await axios({
-            method: "GET",
-            url: "api/get-person",
-        }).then(async (result) => {
-            person.value = result.data;
-            loading.value = false;
-        });
+        loading.value = true;
+
+        const result = await axios.get(`api/get-person?page=${page}`);
+
+        person.value = result.data.data; // IMPORTANT
+        currentPage.value = result.data.current_page;
+        lastPage.value = result.data.last_page;
+
+        loading.value = false;
+
     } catch (error) {
         console.error(error);
     }
+};
+
+const changePage = (page) => {
+    if (page < 1 || page > lastPage.value) return;
+    getPerson(page);
 };
 
 // get if user is logged in for session
@@ -112,52 +122,8 @@ const setValues = (mode, data) => {
 </script>
 
 <template>
-    <div class="w-70" v-if="loginChecker">
-        <table class="table">
-            <thead>
-                <tr>
-                <th>First Name</th>
-                <th>Middle Name</th>
-                <th>Last Name</th>
-                <th>Suffix</th>
-                <th>Birthday</th>
-                <th>Contact</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-if="!Object.keys(person).length && loading == true">
-                    <td colspan="6" class="text-center">Loading</td>
-                </tr>
-                <tr v-else-if="!Object.keys(person).length && loading == false">
-                    <td colspan="6" class="text-center">No record found</td>
-                </tr>
-                <tr v-else class="table-active" v-for="p in person">
-                    <td>{{ p.person_fname }}</td>
-                    <td>{{ p.person_mname }}</td>
-                    <td>{{ p.person_lname }}</td>
-                    <td>{{ p.person_suffix }}</td>
-                    <td>{{ p.person_bday }}</td>
-                    <td>{{ p.person_contact }}</td>
-                    <td>
-                        <button
-                            type="button"
-                            class="btn btn-primary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
-                            @click="setValues(1, p)"
-                        >
-                            Edit Record
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" @click="deletePerson(p)">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+    <div class="container m-5" v-if="loginChecker">
+    
         <!-- Button trigger modal -->
         <button
             type="button"
@@ -168,6 +134,53 @@ const setValues = (mode, data) => {
         >
             Insert Record
         </button>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                    <th>First Name</th>
+                    <th>Middle Name</th>
+                    <th>Last Name</th>
+                    <th>Suffix</th>
+                    <th>Birthday</th>
+                    <th>Contact</th>
+                    <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="person.length === 0 && loading">
+                        <td colspan="6" class="text-center">Loading</td>
+                    </tr>
+                    <tr v-else-if="person.length === 0 && !loading">
+                        <td colspan="6" class="text-center">No record found</td>
+                    </tr>
+                    <tr v-else class="table-active" v-for="p in person">
+                        <td>{{ p.person_fname }}</td>
+                        <td>{{ p.person_mname }}</td>
+                        <td>{{ p.person_lname }}</td>
+                        <td>{{ p.person_suffix }}</td>
+                        <td>{{ p.person_bday }}</td>
+                        <td>{{ p.person_contact }}</td>
+                        <td>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                @click="setValues(1, p)"
+                            >
+                                Edit Record
+                            </button>
+
+                            <button class="btn btn-danger" @click="deletePerson(p)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Modal -->
         <div
@@ -240,5 +253,35 @@ const setValues = (mode, data) => {
             </div>
         </div>
         <button type="button" @click="logout()">Logout</button>
+
+
+        <div class="mt-3 d-flex justify-content-center align-items-center mb5">
+            <button 
+                class="btn btn-secondary me-2"
+                @click="changePage(currentPage - 1)"
+                :disabled="currentPage === 1"
+            >
+                Prev
+            </button>
+
+            <button
+                v-for="page in lastPage"
+                :key="page"
+                class="btn btn-outline-primary me-1"
+                :class="{ 'btn-primary text-white': page === currentPage }"
+                @click="changePage(page)"
+            >
+                {{ page }}
+            </button>
+
+            <button 
+                class="btn btn-secondary ms-2"
+                @click="changePage(currentPage + 1)"
+                :disabled="currentPage === lastPage"
+            >
+                Next
+            </button>
+        </div>
     </div>
+
 </template>

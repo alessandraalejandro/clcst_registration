@@ -10,9 +10,11 @@ class MainpageController extends Controller
 {
     public function getPerson () {
     
-    $person = DB::table("persons_tbl")->get();
+    $persons = DB::table("persons_tbl")
+            ->orderBy('person_id', 'desc')
+            ->paginate(5); // 5 per page
 
-    return $person;
+        return response()->json($persons);
 
     }
     

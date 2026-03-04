@@ -26,7 +26,7 @@ const nav2 = computed(() => {
 <template>
     <!-- ================= NAVBAR ================= -->
     <nav
-        class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
 
         <div class="container text-wrap">
             <a class="navbar-brand d-flex align-items-center gap-3" href="/">

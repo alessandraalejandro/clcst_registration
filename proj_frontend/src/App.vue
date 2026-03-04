@@ -50,8 +50,10 @@ const navDash = ref([
     <div class="d-flex flex-column justify-content-center align-items-center h-100">
       <RouterView />
     </div>
-
-    <FooterSection />
+    <div class="d-flex">
+        <FooterSection />
+    </div>
+    
     
   </div>
 </template>

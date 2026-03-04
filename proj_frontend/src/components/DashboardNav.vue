@@ -1,6 +1,6 @@
 <template>
     <!-- ================= NAVBAR ================= -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container text-wrap">
             <a class="navbar-brand d-flex align-items-center gap-3" href="/">
                 <img src="/src/assets/img/logo.png" alt="Logo" width="40" height="40" />
