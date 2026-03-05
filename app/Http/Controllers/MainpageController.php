@@ -8,15 +8,25 @@ use Illuminate\Support\Facades\DB;
 
 class MainpageController extends Controller
 {
-    public function getPerson () {
+    public function getPerson (Request $params) {
     
-    $persons = DB::table("persons_tbl")
-            ->orderBy('person_id', 'desc')
-            ->paginate(5); // 5 per page
-
-        return response()->json($persons);
-
+    if ($params->search_data === "" || $params->search_data === null){
+        $persons = DB::table("persons_tbl")
+                    ->orderBy('person_id', 'desc')
+                    ->paginate(10); // 5 per page
     }
+    else{
+        $persons = DB::table("persons_tbl")
+            ->where("person_lname", 'LIKE', "%{$params->search_data}%")
+            ->orWhere("person_fname", 'LIKE', "%{$params->search_data}%")
+            ->orWhere("person_mname", 'LIKE', "%{$params->search_data}%")
+            ->orderBy('person_id', 'desc')
+            ->paginate(10); // 5 per page
+    }
+
+    return response()->json($persons);
+}
+
     
     public function editPerson (Request $request) {
     if ($request->input('mode') == 1){

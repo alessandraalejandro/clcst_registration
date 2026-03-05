@@ -8,7 +8,7 @@ const route = useRoute();
 
 // for autoload - render first
 onMounted(() => {
-    getPerson(1);
+    getPerson(currentPage.value);
     getUser();
 });
 
@@ -20,28 +20,48 @@ const person = ref([]);
 const loading = ref(true);
 const currentPage = ref(1);
 const lastPage = ref(1);
+const searchData = ref("");
 
 // get all data in person table
-const getPerson = async (page = 1) => {
+const getPerson = async (page) => {
+    console.log("test");
+    // try {
+    //     loading.value = true;
+
+    //     const result = await axios.get(`api/get-person/?page=${page}`);
+
+    //     person.value = result.data.data; // IMPORTANT
+    //     currentPage.value = result.data.current_page;
+    //     lastPage.value = result.data.last_page;
+
+    //     loading.value = false;
+
+    // } catch (error) {
+    //     console.error(error);
+    // }
     try {
         loading.value = true;
-
-        const result = await axios.get(`api/get-person?page=${page}`);
-
-        person.value = result.data.data; // IMPORTANT
-        currentPage.value = result.data.current_page;
-        lastPage.value = result.data.last_page;
-
-        loading.value = false;
-
-    } catch (error) {
-        console.error(error);
+        await axios({
+            method: "GET",
+            url: `api/get-person/?page=${page}`,
+            params: {
+                search_data: searchData.value,
+            },
+        }).then(async (result) => {
+            person.value = result.data.data; // IMPORTANT
+            currentPage.value = result.data.current_page;
+            lastPage.value = result.data.last_page;
+            // searchPerson.value = person.value;
+            loading.value = false;
+        });
+    } catch (err) {
+        return err;
     }
 };
 
-const changePage = (page) => {
-    if (page < 1 || page > lastPage.value) return;
-    getPerson(page);
+const changePage = (pageValue) => {
+    // if (page < 1 || page > lastPage.value) return;
+    getPerson(pageValue);
 };
 
 // get if user is logged in for session
@@ -50,12 +70,14 @@ const getUser = async () => {
         await axios({
             method: "GET",
             url: "api/user",
-        }).then((result) => {
-            loginChecker.value = result ? true: false; 
-        }).catch((err) => {
-            alert("Unauthorized Session, Please Log In");
-            router.push("/");
-        });
+        })
+            .then((result) => {
+                loginChecker.value = result ? true : false;
+            })
+            .catch((err) => {
+                alert("Unauthorized Session, Please Log In");
+                router.push("/");
+            });
     } catch (error) {
         console.error(error);
     }
@@ -98,7 +120,7 @@ const deletePerson = async (p) => {
 
     await axios.post("api/edit-person", {
         mode: 2,
-        person_id: p.person_id
+        person_id: p.person_id,
     });
 
     await getPerson();
@@ -119,33 +141,67 @@ const setValues = (mode, data) => {
     editPerson.value = x;
 };
 
+// front end search - realtime for less records
+// const searchDataTest = ref("");
+//const searchPerson = ref([]);
+// const realTimeSearch = () => {
+//     console.log(searchDataTest.value);
+
+//     const search = searchDataTest.value.toLowerCase();
+
+//     searchPerson.value = person.value.filter((e) => {
+//         return (
+//             e.person_fname?.toLowerCase().includes(search) ||
+//             e.person_mname?.toLowerCase().includes(search) ||
+//             e.person_lname?.toLowerCase().includes(search) ||
+//             e.person_suffix?.toLowerCase().includes(search)
+//         );
+//     });
+// };
 </script>
 
 <template>
     <div class="container m-5" v-if="loginChecker">
-    
-        <!-- Button trigger modal -->
-        <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            @click="setValues(0)"
-        >
-            Insert Record
-        </button>
+        <div class="d-flex justify-content-between align-items-center">
 
-        <div class="table-responsive">
+            <input
+                v-model="searchData"
+                type="text"
+                @keyup.enter="getPerson(1)"
+                placeholder="Search"
+                class="form-control w-25"
+            />
+
+            <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                @click="setValues(0)"
+            >
+                Insert Record
+            </button>
+        </div>
+
+        <!-- <input
+            v-model="searchDataTest"
+            type="text"
+            @keyup="realTimeSearch()"
+            placeholder="Search"
+        /> -->
+        <!-- Button trigger modal -->
+
+        <div class="table-responsive overflow-auto position-relative"  style="height: 320px;">
             <table class="table table-striped table-bordered">
-                <thead class="table-dark">
+                <thead class="table-dark" style="position: sticky; top: 0;">
                     <tr>
-                    <th>First Name</th>
-                    <th>Middle Name</th>
-                    <th>Last Name</th>
-                    <th>Suffix</th>
-                    <th>Birthday</th>
-                    <th>Contact</th>
-                    <th>Actions</th>
+                        <th>First Name</th>
+                        <th>Middle Name</th>
+                        <th>Last Name</th>
+                        <th>Suffix</th>
+                        <th>Birthday</th>
+                        <th>Contact</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,7 +229,10 @@ const setValues = (mode, data) => {
                                 Edit Record
                             </button>
 
-                            <button class="btn btn-danger" @click="deletePerson(p)">
+                            <button
+                                class="btn btn-danger"
+                                @click="deletePerson(p)"
+                            >
                                 Delete
                             </button>
                         </td>
@@ -252,11 +311,12 @@ const setValues = (mode, data) => {
                 </form>
             </div>
         </div>
-        <button type="button" @click="logout()">Logout</button>
-
+        <button type="button" class="btn btn-danger" @click="logout()">
+            Logout
+        </button>
 
         <div class="mt-3 d-flex justify-content-center align-items-center mb5">
-            <button 
+            <button
                 class="btn btn-secondary me-2"
                 @click="changePage(currentPage - 1)"
                 :disabled="currentPage === 1"
@@ -274,7 +334,7 @@ const setValues = (mode, data) => {
                 {{ page }}
             </button>
 
-            <button 
+            <button
                 class="btn btn-secondary ms-2"
                 @click="changePage(currentPage + 1)"
                 :disabled="currentPage === lastPage"
@@ -283,5 +343,4 @@ const setValues = (mode, data) => {
             </button>
         </div>
     </div>
-
 </template>
