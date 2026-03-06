@@ -7,7 +7,15 @@ const route = useRoute();
 
 const path = computed(() => route.path);
 
-
+const logout = async () => {
+    if (confirm("Are you sure you want to logout") == true) {
+        await axios.post("/logout");
+        alert("Logged Out");
+        router.push("/login");
+    } else {
+        return false;
+    }
+};
 
 const props = defineProps({
     loginNav: {},
@@ -73,7 +81,13 @@ const nav2 = computed(() => {
                             {{ n.title }}
                         </router-link>
                     </li>
+                    <ul>
+                    <button type="button" class="btn btn-danger" @click="logout()">
+                        Logout
+                    </button>
                 </ul>
+                </ul>
+                
             </div>
         </div>
     </nav>

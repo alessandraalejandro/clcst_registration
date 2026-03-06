@@ -83,16 +83,6 @@ const getUser = async () => {
     }
 };
 
-const logout = async () => {
-    if (confirm("Are you sure you want to logout") == true) {
-        await axios.post("/logout");
-        alert("Logged Out");
-        router.push("/login");
-    } else {
-        return false;
-    }
-};
-
 // add or edit person
 const controlPerson = async () => {
     try {
@@ -162,7 +152,7 @@ const setValues = (mode, data) => {
 
 <template>
     <div class="container m-5" v-if="loginChecker">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mb-3">
 
             <input
                 v-model="searchData"
@@ -191,7 +181,7 @@ const setValues = (mode, data) => {
         /> -->
         <!-- Button trigger modal -->
 
-        <div class="table-responsive overflow-auto position-relative"  style="height: 320px;">
+        <div class="table-responsive overflow-auto position-relative" style="height: 320px;">
             <table class="table table-striped table-bordered">
                 <thead class="table-dark" style="position: sticky; top: 0;">
                     <tr>
@@ -311,10 +301,7 @@ const setValues = (mode, data) => {
                 </form>
             </div>
         </div>
-        <button type="button" class="btn btn-danger" @click="logout()">
-            Logout
-        </button>
-
+        
         <div class="mt-3 d-flex justify-content-center align-items-center mb5">
             <button
                 class="btn btn-secondary me-2"
