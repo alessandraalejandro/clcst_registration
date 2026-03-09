@@ -24,16 +24,55 @@ const navLogin = ref([
 const navDash = ref([
     {
         title: "Dashboard",
-        link: "/",
+        link: "/home",
+        category: "navigate",
     },
     {
-        title: "Records",
-        link: "/",
+        title: "User Management",
+        link: "/home",
+        category: "management",
     },
     {
-        title: "Reports",
-        link: "/",
+        title: "Feedback Management",
+        link: "/home",
+        category: "management",
     },
+    {
+        title: "Appointment Management",
+        link: "/home",
+        category: "management",
+    },
+    {
+        title: "Clinic Records",
+        link: "/home",
+        category: "records",
+    },
+    {
+        title: "Guidance Records",
+        category: "",
+        link: "/home",
+        category: "records",
+    },
+    {
+        title: "POD Records",
+        link: "/home",
+        category: "records",
+    },
+    {
+        title: "Student Module",
+        link: "/home",
+        category: "navigate",
+    },
+    {
+        title: "Faculty Module",
+        link: "/home",
+        category: "navigate",
+    },
+    {
+        title: "Guard Module",
+        link: "/home",
+        category: "navigate",
+    }
 ]);
 </script>
 

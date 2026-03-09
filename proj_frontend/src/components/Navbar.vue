@@ -1,4 +1,5 @@
 <script setup>
+import axios from "axios";
 import { ref, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
@@ -33,11 +34,9 @@ const nav2 = computed(() => {
 
 <template>
     <!-- ================= NAVBAR ================= -->
-    <nav
-        class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container text-wrap">
-            <a class="navbar-brand d-flex align-items-center gap-3" href="/">
+            <router-link class="navbar-brand d-flex align-items-center gap-3" to="/home">
                 <img
                     src="/src/assets/img/logo.png"
                     alt="Logo"
@@ -52,7 +51,7 @@ const nav2 = computed(() => {
                         >Student Affairs and Services</small
                     >
                 </div>
-            </a>
+            </router-link>
 
             <button
                 class="navbar-toggler"
@@ -67,27 +66,103 @@ const nav2 = computed(() => {
                 class="collapse navbar-collapse justify-content-end"
                 id="navbarNav"
             >
-                <ul class="navbar-nav gap-lg-3" v-if="path=='/login' || path=='/about' || path=='/contact'">
-                    <li class="nav-item" v-for="(n, index) in nav1" :key="index">
+                <ul
+                    class="navbar-nav gap-lg-3"
+                    v-if="
+                        path == '/login' ||
+                        path == '/about' ||
+                        path == '/contact'
+                    "
+                >
+                    <li
+                        class="nav-item"
+                        v-for="(n, index) in nav1"
+                        :key="index"
+                    >
                         <router-link :to="n.link" class="nav-link">
                             {{ n.title }}
                         </router-link>
                     </li>
                 </ul>
-                
-                <ul class="navbar-nav gap-lg-3" v-else-if="path=='/home'">
-                    <li class="nav-item" v-for="(n, index) in nav2" :key="index">
-                        <router-link :to="n.link" class="nav-link">
-                            {{ n.title }}
-                        </router-link>
+
+                <ul class="navbar-nav gap-lg-3" v-else-if="path == '/home'">
+                    <li class="nav-item dropdown">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                        >
+                            Settings
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li
+                                v-for="n in nav2.filter(
+                                    (i) => i.category === 'navigate',
+                                )"
+                                :key="n.title"
+                            >
+                                <router-link :to="n.link" class="dropdown-item">
+                                    {{ n.title }}
+                                </router-link>
+                            </li>
+                        </ul>
                     </li>
-                    <ul>
-                    <button type="button" class="btn btn-danger" @click="logout()">
-                        Logout
-                    </button>
+
+                    <li class="nav-item dropdown">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                        >
+                            Management
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li
+                                v-for="n in nav2.filter(
+                                    (i) => i.category === 'management',
+                                )"
+                                :key="n.title"
+                            >
+                                <router-link :to="n.link" class="dropdown-item">
+                                    {{ n.title }}
+                                </router-link>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <button
+                            class="btn btn-secondary dropdown-toggle"
+                            data-bs-toggle="dropdown"
+                        >
+                            Records
+                        </button>
+
+                        <ul class="dropdown-menu">
+
+                            <li
+                                v-for="n in nav2.filter(
+                                    (i) => i.category === 'records',
+                                )"
+                                :key="n.title"
+                            >
+                                <router-link :to="n.link" class="dropdown-item">
+                                    {{ n.title }}
+                                </router-link>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <button class="btn btn-danger" @click="logout">
+                            Logout
+                        </button>
+                    </li>
                 </ul>
-                </ul>
-                
             </div>
         </div>
     </nav>

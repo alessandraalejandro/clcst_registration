@@ -51,7 +51,7 @@ const getPerson = async (page) => {
             person.value = result.data.data; // IMPORTANT
             currentPage.value = result.data.current_page;
             lastPage.value = result.data.last_page;
-            // searchPerson.value = person.value;
+            // searchPerson.value = person.value; //
             loading.value = false;
         });
     } catch (err) {
@@ -169,7 +169,7 @@ const setValues = (mode, data) => {
                 data-bs-target="#exampleModal"
                 @click="setValues(0)"
             >
-                Insert Record
+                Insert
             </button>
         </div>
 
@@ -209,22 +209,24 @@ const setValues = (mode, data) => {
                         <td>{{ p.person_bday }}</td>
                         <td>{{ p.person_contact }}</td>
                         <td>
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal"
-                                @click="setValues(1, p)"
-                            >
-                                Edit Record
-                            </button>
+                            <div class="d-flex gap-2">
+                                <button
+                                    type="button"
+                                    class="btn btn-primary px-4"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                    @click="setValues(1, p)"
+                                >
+                                    Edit
+                                </button>
 
-                            <button
-                                class="btn btn-danger"
-                                @click="deletePerson(p)"
-                            >
-                                Delete
-                            </button>
+                                <button
+                                    class="btn btn-danger"
+                                    @click="deletePerson(p)"
+                                >
+                                    Delete
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -240,10 +242,11 @@ const setValues = (mode, data) => {
             aria-hidden="true"
         >
             <div class="modal-dialog">
-                <form class="modal-content" @submit.prevent="controlPerson">
+                <form class="row g-3" @submit.prevent="controlPerson">
+                <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            Modal title
+                            User Record
                         </h5>
                         <button
                             type="button"
@@ -252,39 +255,62 @@ const setValues = (mode, data) => {
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div class="modal-body">
-                        <div>
-                            <label for="firstname">First Name</label><br />
-                            <input
-                                type="text"
-                                v-model="editPerson.person_fname"
-                            /><br />
-                            <label for="middlename">Middle Name</label><br />
-                            <input
-                                type="text"
-                                v-model="editPerson.person_mname"
-                            /><br />
-                            <label for="lastname">Last Name</label><br />
-                            <input
-                                type="text"
-                                v-model="editPerson.person_lname"
-                            /><br />
-                            <label for="suffix">Suffix</label><br />
-                            <input
-                                type="text"
-                                v-model="editPerson.person_suffix"
-                            /><br />
-                            <label for="bday">Birthday</label><br />
-                            <input
-                                type="date"
-                                v-model="editPerson.person_bday"
-                            /><br />
-                            <label for="contact">Contact</label><br />
-                            <input
-                                type="text"
-                                v-model="editPerson.person_contact"
-                            /><br />
+                    <div class="modal-body row g-3">
+                        <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="editPerson.person_fname"
+                        />
                         </div>
+
+                        <div class="col-md-6">
+                        <label class="form-label">Middle Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="editPerson.person_mname"
+                        />
+                        </div>
+
+                        <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="editPerson.person_lname"
+                        />
+                        </div>
+
+                        <div class="col-md-3">
+                        <label class="form-label">Suffix</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="editPerson.person_suffix"
+                        />
+                        </div>
+
+                        <div class="col-md-4">
+                        <label class="form-label">Birthday</label>
+                        <input
+                            type="date"
+                            class="form-control"
+                            v-model="editPerson.person_bday"
+                        />
+                        </div>
+
+                        <div class="col-md-6">
+                        <label class="form-label">Contact</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            v-model="editPerson.person_contact"
+                        />
+                        </div>
+
+                    
                     </div>
                     <div class="modal-footer">
                         <button
@@ -298,6 +324,7 @@ const setValues = (mode, data) => {
                             Save changes
                         </button>
                     </div>
+                </div>
                 </form>
             </div>
         </div>
