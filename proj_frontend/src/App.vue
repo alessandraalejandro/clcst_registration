@@ -29,48 +29,47 @@ const navDash = ref([
     },
     {
         title: "User Management",
-        link: "/home",
+        link: "/users",
         category: "management",
     },
     {
         title: "Feedback Management",
-        link: "/home",
+        link: "/feedback-management",
         category: "management",
     },
     {
         title: "Appointment Management",
-        link: "/home",
+        link: "/appointment-management",
         category: "management",
     },
     {
         title: "Clinic Records",
-        link: "/home",
+        link: "/clinic-records",
         category: "records",
     },
     {
         title: "Guidance Records",
-        category: "",
-        link: "/home",
+        link: "/guidance-records",
         category: "records",
     },
     {
         title: "POD Records",
-        link: "/home",
+        link: "/pod-records",
         category: "records",
     },
     {
         title: "Student Module",
-        link: "/home",
+        link: "/student-module",
         category: "navigate",
     },
     {
         title: "Faculty Module",
-        link: "/home",
+        link: "/faculty-module",
         category: "navigate",
     },
     {
         title: "Guard Module",
-        link: "/home",
+        link: "/guard-module",
         category: "navigate",
     }
 ]);

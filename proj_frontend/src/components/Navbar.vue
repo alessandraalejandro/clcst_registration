@@ -6,7 +6,32 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-const path = computed(() => route.path);
+const allowedPathsGuest = [
+  '/login',
+  '/about',
+  '/contact',
+];
+
+const showGuestNavbar = computed(() => {
+  return allowedPathsGuest.includes(route.path)
+});
+
+const allowedPaths = [
+  '/home',
+  '/users',
+  '/student-module',
+  '/faculty-module',
+  '/guard-module',
+  '/feedback-management',
+  '/appointment-management',
+  '/clinic-records',
+  '/guidance-records',
+  '/pod-records'
+];
+
+const showAdminNavbar = computed(() => {
+  return allowedPaths.includes(route.path)
+});
 
 const logout = async () => {
     if (confirm("Are you sure you want to logout") == true) {
@@ -30,6 +55,7 @@ const nav1 = computed(() => {
 const nav2 = computed(() => {
     return props.dashNav;
 });
+
 </script>
 
 <template>
@@ -67,13 +93,7 @@ const nav2 = computed(() => {
                 id="navbarNav"
             >
                 <ul
-                    class="navbar-nav gap-lg-3"
-                    v-if="
-                        path == '/login' ||
-                        path == '/about' ||
-                        path == '/contact'
-                    "
-                >
+                    class="navbar-nav gap-lg-3" v-if="showGuestNavbar">
                     <li
                         class="nav-item"
                         v-for="(n, index) in nav1"
@@ -85,7 +105,7 @@ const nav2 = computed(() => {
                     </li>
                 </ul>
 
-                <ul class="navbar-nav gap-lg-3" v-else-if="path == '/home'">
+                <ul class="navbar-nav gap-lg-3" v-else-if="showAdminNavbar">
                     <li class="nav-item dropdown">
                         <button
                             class="btn btn-secondary dropdown-toggle"
