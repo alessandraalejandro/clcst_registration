@@ -6,31 +6,30 @@ import { useRouter, useRoute } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
-const allowedPathsGuest = [
-  '/login',
-  '/about',
-  '/contact',
-];
+const allowedPathsGuest = ["/login", "/about", "/contact"];
 
 const showGuestNavbar = computed(() => {
-  return allowedPathsGuest.includes(route.path)
+    return allowedPathsGuest.includes(route.path);
 });
 
+
+
 const allowedPaths = [
-  '/home',
-  '/users',
-  '/student-module',
-  '/faculty-module',
-  '/guard-module',
-  '/feedback-management',
-  '/appointment-management',
-  '/clinic-records',
-  '/guidance-records',
-  '/pod-records'
+    "/home",
+    "/users",
+    "/student-module",
+    "/faculty-module",
+    "/guard-module",
+    "/feedback-management",
+    "/appointment-management",
+    "/clinic-records",
+    "/guidance-records",
+    "/pod-records",
+    "/user-access",
 ];
 
 const showAdminNavbar = computed(() => {
-  return allowedPaths.includes(route.path)
+    return allowedPaths.includes(route.path);
 });
 
 const logout = async () => {
@@ -62,7 +61,10 @@ const nav2 = computed(() => {
     <!-- ================= NAVBAR ================= -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
         <div class="container text-wrap">
-            <router-link class="navbar-brand d-flex align-items-center gap-3" to="/home">
+            <router-link
+                class="navbar-brand d-flex align-items-center gap-3"
+                to="/home"
+            >
                 <img
                     src="/src/assets/img/logo.png"
                     alt="Logo"
@@ -92,8 +94,7 @@ const nav2 = computed(() => {
                 class="collapse navbar-collapse justify-content-end"
                 id="navbarNav"
             >
-                <ul
-                    class="navbar-nav gap-lg-3" v-if="showGuestNavbar">
+                <ul class="navbar-nav gap-lg-3" v-if="showGuestNavbar">
                     <li
                         class="nav-item"
                         v-for="(n, index) in nav1"
@@ -115,7 +116,6 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-
                             <li
                                 v-for="n in nav2.filter(
                                     (i) => i.category === 'navigate',
@@ -138,7 +138,6 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-
                             <li
                                 v-for="n in nav2.filter(
                                     (i) => i.category === 'management',
@@ -149,7 +148,6 @@ const nav2 = computed(() => {
                                     {{ n.title }}
                                 </router-link>
                             </li>
-
                         </ul>
                     </li>
 
@@ -162,7 +160,6 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-
                             <li
                                 v-for="n in nav2.filter(
                                     (i) => i.category === 'records',
@@ -173,7 +170,6 @@ const nav2 = computed(() => {
                                     {{ n.title }}
                                 </router-link>
                             </li>
-
                         </ul>
                     </li>
 

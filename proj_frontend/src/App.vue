@@ -1,8 +1,14 @@
 <script setup>
+import axios from "axios";
 import { ref, onMounted, computed } from "vue";
 import Navbar from "./components/Navbar.vue";
 import FooterSection from "./components/FooterSection.vue";
 import { useRoute } from "vue-router";
+
+onMounted(() => {
+    getUser();
+
+});
 
 const route = useRoute();
 
@@ -30,6 +36,11 @@ const navDash = ref([
     {
         title: "User Management",
         link: "/users",
+        category: "management",
+    },
+    {
+        title: "User Access",
+        link: "/user-access",
         category: "management",
     },
     {
@@ -71,8 +82,35 @@ const navDash = ref([
         title: "Guard Module",
         link: "/guard-module",
         category: "navigate",
-    }
+    },
 ]);
+
+const getUser = async () => {
+    try {
+        await axios({
+            method: "GET",
+            url: "api/user",
+        })
+            .then((result1) => {
+                axios({
+                    method: "GET",
+                    url: "api/get-user-access/1",
+                })
+                    .then((result2) => {
+                        console.log(result2);
+                        //loginChecker.value = result1 ? true : false;
+                        
+                    })
+                
+            })
+            .catch((err) => {
+                alert("Unauthorized Session, Please Log In");
+                router.push("/");
+            });
+    } catch (error) {
+        console.error(error);
+    }
+};
 </script>
 
 <template>

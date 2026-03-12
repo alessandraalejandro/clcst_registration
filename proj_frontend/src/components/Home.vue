@@ -126,6 +126,8 @@ const setValues = (mode, data) => {
         person_suffix: data ? data.person_suffix : "",
         person_bday: data ? data.person_bday : "",
         person_contact: data ? data.person_contact : "",
+        person_email: data ? data.person_email : "",
+        person_password: data ? data.person_password : "",
     };
 
     editPerson.value = x;
@@ -309,6 +311,25 @@ const setValues = (mode, data) => {
                             v-model="editPerson.person_contact"
                         />
                         </div>
+                        
+                        <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            v-model="editPerson.email"
+                        />
+                        </div>
+
+                        <div class="col-md-6">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            v-model="editPerson.password"
+                        />
+                        </div>
+                        
 
                     
                     </div>
