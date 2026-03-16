@@ -3,13 +3,14 @@ import axios from "axios";
 import { ref, onMounted, computed } from "vue";
 import Navbar from "./components/Navbar.vue";
 import FooterSection from "./components/FooterSection.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 onMounted(() => {
-    getUser();
+   // getUser();
 
 });
 
+const router = useRouter();
 const route = useRoute();
 
 const navLogin = ref([
@@ -36,11 +37,6 @@ const navDash = ref([
     {
         title: "User Management",
         link: "/users",
-        category: "management",
-    },
-    {
-        title: "User Access",
-        link: "/user-access",
         category: "management",
     },
     {
@@ -85,32 +81,41 @@ const navDash = ref([
     },
 ]);
 
-const getUser = async () => {
-    try {
-        await axios({
-            method: "GET",
-            url: "api/user",
-        })
-            .then((result1) => {
-                axios({
-                    method: "GET",
-                    url: "api/get-user-access/1",
-                })
-                    .then((result2) => {
-                        console.log(result2);
-                        //loginChecker.value = result1 ? true : false;
+// const getUser = async () => {
+//     try {
+//         const result1 = await axios.get("api/user");
+//         loginChecker.value = result1 ? true : false;
+//     } catch (err) {
+//         alert("Unauthorized Session, Please Log In");
+//         router.push("/");
+//     }
+// };
+// const getUser = async () => {
+//     try {
+//         await axios({
+//             method: "GET",
+//             url: "api/user",
+//         })
+//             .then((result1) => {
+//                 axios({
+//                     method: "GET",
+//                     url: "api/get-user-access/1",
+//                 })
+//                     .then((result2) => {
+//                         console.log(result2);
+//                         //loginChecker.value = result1 ? true : false;
                         
-                    })
+//                     })
                 
-            })
-            .catch((err) => {
-                alert("Unauthorized Session, Please Log In");
-                router.push("/");
-            });
-    } catch (error) {
-        console.error(error);
-    }
-};
+//             })
+//             .catch((err) => {
+//                 alert("Unauthorized Session, Please Log In");
+//                 router.push("/");
+//             });
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
 </script>
 
 <template>

@@ -13,6 +13,7 @@ onMounted(() => {
 });
 
 const editPerson = ref({});
+const editPersonAccess = ref({});
 
 const loginChecker = ref(false);
 
@@ -21,6 +22,63 @@ const loading = ref(true);
 const currentPage = ref(1);
 const lastPage = ref(1);
 const searchData = ref("");
+const personAccess = ref([]);
+
+const getPersonAccess = async (id) => {
+    console.log("test-access");
+    try {
+        loading.value = true;
+        await axios({
+            method: "GET",
+            url: `/api/get-user-access/${id}`,
+        }).then(async (result) => {
+            personAccess.value = result.data.data; // IMPORTANT
+            setValues1(personAccess.value);
+            console.log(personAccess.value)
+        });
+    } catch (err) {
+        return err;
+    }
+};
+
+const controlPersonAccess = async () => {
+    console.log("testing")
+    try {
+        await axios({
+            method: "POST",
+            url: "api/edit-person-access",
+            data: editPersonAccess.value,
+        }).then(async (result) => {
+            console.log(result.status);
+            if (result.status == 200) {
+                alert("Successfully Added");
+                location.reload();
+            } else {
+                alert("Failed");
+            }
+        });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const setValues1 = (data) => {
+    let x1 = {
+        account_id: data ? data.account_id : null,  
+        roles: data ? data.roles : "",
+        user_management: data ? data.user_management : 0,
+        feedback_management: data ? data.feedback_management : 0,
+        appointment_management: data ? data.appointment_management : 0,
+        clinic_records: data ? data.clinic_records : 0,
+        guidance_records: data ? data.guidance_records : 0,
+        pod_records: data ? data.pod_records : 0,
+        student_module: data ? data.student_module : 0,
+        faculty_module: data ? data.faculty_module : 0,
+        guard_module: data ? data.guard_module : 0,
+        };
+
+    editPersonAccess.value = x1;
+};
 
 // get all data in person table
 const getPerson = async (page) => {
@@ -214,6 +272,16 @@ const setValues = (mode, data) => {
                             <div class="d-flex gap-2">
                                 <button
                                     type="button"
+                                    class="btn btn-warning px-4"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal1"
+                                    @click="getPersonAccess(p.account_id)"
+                                >
+                                    Access
+                                </button>
+
+                                <button
+                                    type="button"
                                     class="btn btn-primary px-4"
                                     data-bs-toggle="modal"
                                     data-bs-target="#exampleModal"
@@ -233,6 +301,130 @@ const setValues = (mode, data) => {
                     </tr>
                 </tbody>
             </table>
+        </div>
+        
+        <div
+            class="modal fade"
+            id="exampleModal1"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog">
+                <form class="row g-3" @submit.prevent="controlPersonAccess">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            User Permission
+                        </h5>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                        <div class="modal-body row g-3">
+                            <div class="col-md-12">
+                            <label class="form-label">Role</label>
+                            <select class="form-control" v-model="editPersonAccess.roles">
+                                <option value="">Select Role</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Faculty">Faculty</option>
+                                <option value="Guard">Guard</option>
+                                <option value="Student">Student</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.user_management" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                User Management
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.feedback_management" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Feedback Management
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.appointment_management" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Appointment Management
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.clinic_records" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Clinic Records
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.guidance_records" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Guidance Records
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.pod_records" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                POD Records
+                            </label>
+                        </div>
+
+                         <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.student_module" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Student Module
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.faculty_module" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Faculty Module
+                            </label>
+                        </div>
+
+                        <div class="col-md-4 form-check">
+                            <input class="form-check-input" type="checkbox"
+                                v-model="editPersonAccess.guard_module" :true-value="1" :false-value="0">
+                            <label class="form-check-label">
+                                Guard Module
+                            </label>
+                        </div>
+
+                    
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </div>
         </div>
 
         <!-- Modal -->

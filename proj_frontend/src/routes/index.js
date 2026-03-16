@@ -50,9 +50,6 @@ const routes = [
     {
         path: '/pod-records', name: 'PODRecords', component: () => import('../components/PODRecords.vue')
     },
-    {
-        path: '/user-access', name: 'UserAccess', component: () => import('../components/UserAccess.vue')
-    },
 
 
     {

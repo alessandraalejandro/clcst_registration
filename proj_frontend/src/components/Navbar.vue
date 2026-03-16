@@ -25,7 +25,6 @@ const allowedPaths = [
     "/clinic-records",
     "/guidance-records",
     "/pod-records",
-    "/user-access",
 ];
 
 const showAdminNavbar = computed(() => {
