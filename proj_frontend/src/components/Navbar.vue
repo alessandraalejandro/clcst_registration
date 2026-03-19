@@ -5,14 +5,17 @@ import { useRouter, useRoute } from "vue-router";
 
 const router = useRouter();
 const route = useRoute();
+const userAccess = ref({});
 
+onMounted(() => {
+   getUser();
+
+});
 const allowedPathsGuest = ["/login", "/about", "/contact"];
 
 const showGuestNavbar = computed(() => {
     return allowedPathsGuest.includes(route.path);
 });
-
-
 
 const allowedPaths = [
     "/home",
@@ -30,6 +33,19 @@ const allowedPaths = [
 const showAdminNavbar = computed(() => {
     return allowedPaths.includes(route.path);
 });
+
+const getUser = async () => {
+    try {
+        const result = await axios.get("api/user");
+        const value = await axios.get(`/api/get-user-access/${result.data.id}`);
+        //loginChecker.value = result1 ? true : false;
+        userAccess.value = value.data.data;
+        console.log(value.data.data)
+    } catch (err) {
+        //alert("Unauthorized Session, Please Log In");
+        router.push("/");
+    }
+};
 
 const logout = async () => {
     if (confirm("Are you sure you want to logout") == true) {
@@ -53,6 +69,18 @@ const nav1 = computed(() => {
 const nav2 = computed(() => {
     return props.dashNav;
 });
+
+const getMenuByCategory = (category) => {
+    return nav2.value.filter(
+        (i) =>
+            i.category === category &&
+            userAccess.value?.[i.accessKey] === 1
+    );
+};
+
+const settingsMenu = computed(() => getMenuByCategory("navigate"));
+const managementMenu = computed(() => getMenuByCategory("management"));
+const recordsMenu = computed(() => getMenuByCategory("records"));
 
 </script>
 
@@ -106,7 +134,7 @@ const nav2 = computed(() => {
                 </ul>
 
                 <ul class="navbar-nav gap-lg-3" v-else-if="showAdminNavbar">
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="settingsMenu.length">
                         <button
                             class="btn btn-secondary dropdown-toggle"
                             data-bs-toggle="dropdown"
@@ -115,20 +143,15 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li
-                                v-for="n in nav2.filter(
-                                    (i) => i.category === 'navigate',
-                                )"
-                                :key="n.title"
-                            >
+                            <li v-for="n in settingsMenu" :key="n.title">
                                 <router-link :to="n.link" class="dropdown-item">
                                     {{ n.title }}
                                 </router-link>
                             </li>
                         </ul>
                     </li>
-
-                    <li class="nav-item dropdown">
+                    
+                    <li class="nav-item dropdown" v-if="managementMenu.length">
                         <button
                             class="btn btn-secondary dropdown-toggle"
                             data-bs-toggle="dropdown"
@@ -137,12 +160,7 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li
-                                v-for="n in nav2.filter(
-                                    (i) => i.category === 'management',
-                                )"
-                                :key="n.title"
-                            >
+                            <li v-for="n in managementMenu" :key="n.title">
                                 <router-link :to="n.link" class="dropdown-item">
                                     {{ n.title }}
                                 </router-link>
@@ -150,7 +168,7 @@ const nav2 = computed(() => {
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" v-if="recordsMenu.length">
                         <button
                             class="btn btn-secondary dropdown-toggle"
                             data-bs-toggle="dropdown"
@@ -159,12 +177,7 @@ const nav2 = computed(() => {
                         </button>
 
                         <ul class="dropdown-menu">
-                            <li
-                                v-for="n in nav2.filter(
-                                    (i) => i.category === 'records',
-                                )"
-                                :key="n.title"
-                            >
+                            <li v-for="n in recordsMenu" :key="n.title">
                                 <router-link :to="n.link" class="dropdown-item">
                                     {{ n.title }}
                                 </router-link>

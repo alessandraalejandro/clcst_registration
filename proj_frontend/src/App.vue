@@ -5,11 +5,6 @@ import Navbar from "./components/Navbar.vue";
 import FooterSection from "./components/FooterSection.vue";
 import { useRoute, useRouter } from "vue-router";
 
-onMounted(() => {
-   // getUser();
-
-});
-
 const router = useRouter();
 const route = useRoute();
 
@@ -38,84 +33,58 @@ const navDash = ref([
         title: "User Management",
         link: "/users",
         category: "management",
+        accessKey: "user_management",
     },
     {
         title: "Feedback Management",
         link: "/feedback-management",
         category: "management",
+        accessKey: "feedback_management",
     },
     {
         title: "Appointment Management",
         link: "/appointment-management",
         category: "management",
+        accessKey: "appointment_management",
     },
     {
         title: "Clinic Records",
         link: "/clinic-records",
         category: "records",
+        accessKey: "clinic_records",
     },
     {
         title: "Guidance Records",
         link: "/guidance-records",
         category: "records",
+        accessKey: "guidance_records",
     },
     {
         title: "POD Records",
         link: "/pod-records",
         category: "records",
+        accessKey: "pod_records",
     },
     {
         title: "Student Module",
         link: "/student-module",
         category: "navigate",
+        accessKey: "student_module",
     },
     {
         title: "Faculty Module",
         link: "/faculty-module",
         category: "navigate",
+        accessKey: "faculty_module",
     },
     {
         title: "Guard Module",
         link: "/guard-module",
         category: "navigate",
+        accessKey: "guard_module",
     },
 ]);
 
-// const getUser = async () => {
-//     try {
-//         const result1 = await axios.get("api/user");
-//         loginChecker.value = result1 ? true : false;
-//     } catch (err) {
-//         alert("Unauthorized Session, Please Log In");
-//         router.push("/");
-//     }
-// };
-// const getUser = async () => {
-//     try {
-//         await axios({
-//             method: "GET",
-//             url: "api/user",
-//         })
-//             .then((result1) => {
-//                 axios({
-//                     method: "GET",
-//                     url: "api/get-user-access/1",
-//                 })
-//                     .then((result2) => {
-//                         console.log(result2);
-//                         //loginChecker.value = result1 ? true : false;
-                        
-//                     })
-                
-//             })
-//             .catch((err) => {
-//                 alert("Unauthorized Session, Please Log In");
-//                 router.push("/");
-//             });
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
 </script>
 
 <template>

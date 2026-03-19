@@ -34,7 +34,7 @@ const getPersonAccess = async (id) => {
         }).then(async (result) => {
             personAccess.value = result.data.data; // IMPORTANT
             setValues1(personAccess.value);
-            console.log(personAccess.value)
+            loading.value = false;
         });
     } catch (err) {
         return err;
@@ -323,9 +323,13 @@ const setValues = (mode, data) => {
                             data-bs-dismiss="modal"
                             aria-label="Close"
                         ></button>
+                        
                     </div>
-                        <div class="modal-body row g-3">
-                            <div class="col-md-12">
+                    <div v-if=loading>
+                        <h4 class="col-md-12 text-center">Loading</h4>
+                    </div>
+                    <div class="modal-body row g-3" v-else>
+                        <div class="col-md-12">
                             <label class="form-label">Role</label>
                             <select class="form-control" v-model="editPersonAccess.roles">
                                 <option value="">Select Role</option>
