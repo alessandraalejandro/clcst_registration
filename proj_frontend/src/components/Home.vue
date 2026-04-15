@@ -222,15 +222,22 @@ const setValues = (mode, data) => {
                 class="form-control w-25"
             />
 
-            <button
-                type="button"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-                @click="setValues(0)"
-            >
-                Insert
-            </button>
+            <div class="d-flex gap-2">
+                <button
+                    type="button"
+                    class="btn btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="setValues(0)"
+                >
+                    Create One
+                </button>
+
+                <label for="file-input" class="btn btn-outline-success mb-0">
+                    Bulk Create
+                </label>
+                <input id="file-input" type="file" hidden />
+            </div>
         </div>
 
         <!-- <input

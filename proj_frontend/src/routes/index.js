@@ -1,4 +1,4 @@
-import { createRouter, createMemoryHistory, createWebHashHistory } from "vue-router";
+import { createRouter, createMemoryHistory, createWebHistory } from "vue-router";
 import Login from '../components/Login.vue'
 
 const routes = [
@@ -9,7 +9,7 @@ const routes = [
         path: '/login', name: 'Login', component: Login
     },
     {
-        path: '/home', name: 'Home', component: () => import("../components/Home.vue"), 
+        path: '/home', name: 'Home', component: () => import("../components/Home.vue")
     },
     {
         path: '/about', name: 'About', component: () => import('../components/About.vue')
@@ -59,7 +59,7 @@ const routes = [
 
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes
 })
 

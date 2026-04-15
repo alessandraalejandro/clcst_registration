@@ -1,6 +1,7 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+import Sidebar from "./components/Sidebar.vue";
 import Navbar from "./components/Navbar.vue";
 import FooterSection from "./components/FooterSection.vue";
 import { useRoute, useRouter } from "vue-router";
